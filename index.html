@@ -8,154 +8,211 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Outfit:wght@300;400;700;900&display=swap');
-        :root { --accent: #000; --bg: #ffffff; --text: #000; --card: #f9f9f9; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
+        
+        :root { 
+            --accent: #ff0033; /* Electric Red */
+            --bg: #050505; 
+            --text: #ffffff; 
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            font-family: 'Outfit', sans-serif; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth; 
+        }
+
+        /* Apple-style Smooth Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
         section { scroll-margin-top: 60px; padding-top: 5rem; padding-bottom: 5rem; }
+
         .hero-title {
             font-family: 'Syncopate', sans-serif;
-            background: linear-gradient(90deg, #000, #666, #000);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-size: 200% auto; animation: shine 5s linear infinite;
+            background: linear-gradient(90deg, #fff, var(--accent), #fff);
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto; 
+            animation: shine 5s linear infinite;
         }
+
         @keyframes shine { to { background-position: 200% center; } }
+
+        /* Full Glassmorphism Effect */
         .glass-card {
-            background: var(--card); border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 4px; transition: 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            overflow: hidden; display: flex; flex-direction: column;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; 
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
         }
-        .glass-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: #000; }
-        .btn-black {
-            background: #000; color: #fff; padding: 12px 28px; 
-            font-weight: 900; text-transform: uppercase; letter-spacing: 2px; 
-            font-size: 9px; border-radius: 2px; transition: 0.3s;
+
+        .glass-card:hover { 
+            transform: translateY(-12px) scale(1.02); 
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(255, 0, 51, 0.15);
+            background: rgba(255, 255, 255, 0.06);
         }
-        .btn-black:hover { background: #333; transform: scale(1.05); }
-        iframe { border: none; width: 100%; height: 100%; }
-        #mobile-menu { transform: translateX(100%); transition: 0.5s ease; visibility: hidden; background: #fff; }
-        #mobile-menu.active { transform: translateX(0); visibility: visible; }
-        .bar-bg { width: 100%; height: 3px; background: #eee; border-radius: 10px; margin-top: 8px; overflow: hidden; }
-        .bar-fill { height: 100%; background: #000; width: 0; transition: 2.5s cubic-bezier(0.1, 1, 0.1, 1); }
+
+        .btn-electric {
+            background: var(--accent);
+            color: #fff;
+            padding: 14px 32px; 
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px; 
+            font-size: 10px;
+            border-radius: 50px;
+            transition: 0.4s;
+            box-shadow: 0 0 20px rgba(255, 0, 51, 0.4);
+        }
+
+        .btn-electric:hover {
+            box-shadow: 0 0 35px rgba(255, 0, 51, 0.7);
+            transform: scale(1.05);
+            background: #ff1a4a;
+        }
+
+        iframe { border: none; width: 100%; height: 100%; border-radius: 12px; }
+
+        #mobile-menu { 
+            transform: translateX(100%); 
+            transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(30px);
+        }
+        #mobile-menu.active { transform: translateX(0); }
+
+        /* Electric Progress Bars */
+        .bar-bg { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-top: 10px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--accent); width: 0; transition: 2.5s cubic-bezier(0.1, 1, 0.1, 1); box-shadow: 0 0 10px var(--accent); }
         .aos-animate .bar-fill { width: var(--w); }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: ''; width: 0; height: 2px; background: var(--accent);
+            position: absolute; bottom: -5px; left: 0; transition: 0.3s;
+        }
+        .nav-link:hover::after { width: 100%; }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-[100] px-8 py-5 flex justify-between items-center bg-white/90 backdrop-blur-xl border-b border-black/5">
-        <div class="text-xl font-black italic uppercase tracking-tighter">PRAJWAL<span class="text-gray-400">.</span></div>
-        <div class="hidden md:flex gap-10 text-[9px] uppercase font-bold tracking-[0.3em] opacity-40">
-            <a href="#hero" class="hover:text-black transition">Home</a>
-            <a href="#showreel" class="hover:text-black transition">Show Reel</a>
-            <a href="#motion" class="hover:text-black transition">Motion & 3D</a>
-            <a href="#editing" class="hover:text-black transition">Editing</a>
-            <a href="#about" class="hover:text-black transition">About</a>
+    <nav class="fixed top-0 w-full z-[100] px-8 py-5 flex justify-between items-center bg-black/60 backdrop-blur-2xl border-b border-white/5">
+        <div class="text-xl font-black italic uppercase tracking-tighter">PRAJWAL<span class="text-[#ff0033]">.</span></div>
+        <div class="hidden md:flex gap-10 text-[10px] uppercase font-bold tracking-[0.3em] text-white/50">
+            <a href="#hero" class="nav-link hover:text-white transition">Home</a>
+            <a href="#showreel" class="nav-link hover:text-white transition">Show Reel</a>
+            <a href="#motion" class="nav-link hover:text-white transition">Motion & 3D</a>
+            <a href="#editing" class="nav-link hover:text-white transition">Editing</a>
+            <a href="#about" class="nav-link hover:text-white transition">About</a>
         </div>
-        <button id="menu-btn" class="md:hidden text-black"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button id="menu-btn" class="md:hidden text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16" stroke-width="2" stroke-linecap="round"/></svg></button>
     </nav>
 
     <div id="mobile-menu" class="fixed inset-0 z-[110] flex flex-col items-center justify-center gap-8 uppercase font-bold text-xl">
-        <button id="close-btn" class="absolute top-8 right-8 text-4xl">&times;</button>
-        <a href="#hero" class="mobile-link">Home</a>
-        <a href="#showreel" class="mobile-link">Show Reel</a>
-        <a href="#motion" class="mobile-link">Motion & 3D</a>
-        <a href="#editing" class="mobile-link">Editing</a>
-        <a href="#about" class="mobile-link">About</a>
+        <button id="close-btn" class="absolute top-8 right-8 text-4xl text-white">&times;</button>
+        <a href="#hero" class="mobile-link text-white hover:text-[#ff0033]">Home</a>
+        <a href="#showreel" class="mobile-link text-white hover:text-[#ff0033]">Show Reel</a>
+        <a href="#motion" class="mobile-link text-white hover:text-[#ff0033]">Motion & 3D</a>
+        <a href="#editing" class="mobile-link text-white hover:text-[#ff0033]">Editing</a>
+        <a href="#about" class="mobile-link text-white hover:text-[#ff0033]">About</a>
     </div>
 
-    <section id="hero" class="h-screen flex items-center justify-center pt-0">
+    <section id="hero" class="h-screen flex items-center justify-center">
         <div class="text-center" data-aos="fade-up">
-            <p class="text-[9px] font-bold tracking-[1.5em] text-gray-400 uppercase mb-4">Visual Architect / Editor</p>
+            <p class="text-[10px] font-bold tracking-[1.5em] text-[#ff0033] uppercase mb-4">Visual Architect / Editor</p>
             <h1 class="hero-title text-6xl md:text-9xl font-black mb-8 leading-none uppercase">PRAJWAL<br>DAUNDKAR</h1>
-            <div class="flex gap-4 justify-center mt-6">
-                <a href="#showreel" class="btn-black">View Portfolio</a>
-                <a href="https://drive.google.com/file/d/1ZqLN2GRTmaKuKsdxRWyRjPCwXioWLDFz/view?usp=sharing" target="_blank" class="border border-black px-8 py-3 text-[10px] uppercase font-black hover:bg-black hover:text-white transition">Resume</a>
+            <div class="flex gap-6 justify-center mt-8">
+                <a href="#showreel" class="btn-electric">View Portfolio</a>
+                <a href="https://drive.google.com/file/d/1ZqLN2GRTmaKuKsdxRWyRjPCwXioWLDFz/view?usp=sharing" target="_blank" class="border border-white/20 px-8 py-3 text-[10px] uppercase font-black rounded-full hover:bg-white hover:text-black transition">Resume</a>
             </div>
         </div>
     </section>
 
     <section id="showreel">
-        <h3 class="text-center text-[10px] font-black tracking-[1.2em] uppercase mb-10 opacity-20 italic">SHOW REEL</h3>
-        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-4 px-6">
-            <div class="glass-card aspect-video" data-aos="fade-up">
+        <h3 class="text-center text-[11px] font-black tracking-[1.2em] uppercase mb-14 text-white/20 italic">SHOW REEL</h3>
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 px-6">
+            <div class="glass-card aspect-video p-1" data-aos="fade-up">
                 <iframe src="https://www.youtube.com/embed/BtPQgbaaUlk"></iframe>
             </div>
-            <div class="glass-card aspect-video" data-aos="fade-up" data-aos-delay="100">
+            <div class="glass-card aspect-video p-1" data-aos="fade-up" data-aos-delay="100">
                 <iframe src="https://www.youtube.com/embed/jvYeHASFBqo"></iframe>
             </div>
         </div>
     </section>
 
     <section id="motion">
-        <h3 class="text-center text-[10px] font-black tracking-[1.2em] uppercase mb-12 opacity-20 italic">MOTION GRAPHICS & 3D</h3>
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6">
-            <div class="glass-card aspect-video" data-aos="fade-up"><iframe src="https://www.youtube.com/embed/dGExt5vsmIA"></iframe></div>
-            <div class="glass-card aspect-video" data-aos="fade-up" data-aos-delay="100"><iframe src="https://www.youtube.com/embed/SdBeWzJRVAU"></iframe></div>
-            <div class="glass-card aspect-video" data-aos="fade-up" data-aos-delay="200"><iframe src="https://www.youtube.com/embed/fIIxLTrnOqs"></iframe></div>
+        <h3 class="text-center text-[11px] font-black tracking-[1.2em] uppercase mb-14 text-white/20 italic">MOTION & 3D</h3>
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
+            <div class="glass-card aspect-video p-1" data-aos="fade-up"><iframe src="https://www.youtube.com/embed/dGExt5vsmIA"></iframe></div>
+            <div class="glass-card aspect-video p-1" data-aos="fade-up" data-aos-delay="100"><iframe src="https://www.youtube.com/embed/SdBeWzJRVAU"></iframe></div>
+            <div class="glass-card aspect-video p-1" data-aos="fade-up" data-aos-delay="200"><iframe src="https://www.youtube.com/embed/fIIxLTrnOqs"></iframe></div>
             
-            <div class="glass-card aspect-video flex flex-col items-center justify-center bg-gray-50 p-6" data-aos="fade-up">
-                <span class="text-[8px] font-black tracking-widest text-gray-400 mb-4 uppercase">Motion Graphic Clip</span>
-                <a href="https://mega.nz/file/aywRVLgI#V_BqbAJs0oGsnDDX3PiYsDCyJODCjhnsTcg8fGOvyPo" target="_blank" class="btn-black">Premium View</a>
+            <div class="glass-card aspect-video flex flex-col items-center justify-center p-8" data-aos="fade-up">
+                <span class="text-[9px] font-black tracking-widest text-white/40 mb-6 uppercase">Motion Graphic Clip</span>
+                <a href="https://mega.nz/file/aywRVLgI#V_BqbAJs0oGsnDDX3PiYsDCyJODCjhnsTcg8fGOvyPo" target="_blank" class="btn-electric">Premium View</a>
             </div>
-            <div class="glass-card aspect-video flex flex-col items-center justify-center bg-gray-50 p-6" data-aos="fade-up" data-aos-delay="100">
-                <span class="text-[8px] font-black tracking-widest text-gray-400 mb-4 uppercase">3D Works Folder</span>
-                <a href="https://mega.nz/folder/unhilLpb#_AuX3qkn6ELn6Vd46R2_Zg" target="_blank" class="btn-black">Open Folder</a>
+            <div class="glass-card aspect-video flex flex-col items-center justify-center p-8" data-aos="fade-up" data-aos-delay="100">
+                <span class="text-[9px] font-black tracking-widest text-white/40 mb-6 uppercase">3D Works Folder</span>
+                <a href="https://mega.nz/folder/unhilLpb#_AuX3qkn6ELn6Vd46R2_Zg" target="_blank" class="btn-electric">Open Folder</a>
             </div>
-        </div>
-    </section>
-
-    <section id="film" class="bg-black text-white py-32">
-        <div class="max-w-5xl mx-auto px-6 text-center">
-            <h3 class="text-[9px] font-black tracking-[1.5em] uppercase mb-10 opacity-40">FEATURED SHORT FILM</h3>
-            <div class="glass-card border-white/10" data-aos="zoom-in">
-                <div class="aspect-video"><iframe src="https://www.youtube.com/embed/vx8ihMXQ1aE"></iframe></div>
-            </div>
-            <h4 class="hero-title text-4xl mt-10 font-black uppercase italic" style="background: linear-gradient(90deg, #fff, #555, #fff); -webkit-background-clip: text;">ANONYMOUS</h4>
         </div>
     </section>
 
     <section id="editing">
-        <h3 class="text-center text-[10px] font-black tracking-[1.2em] uppercase mb-12 opacity-20 italic">VIDEO EDITING</h3>
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 px-6">
-            <div class="glass-card aspect-[9/16]" data-aos="fade-up">
+        <h3 class="text-center text-[11px] font-black tracking-[1.2em] uppercase mb-14 text-white/20 italic">VERTICAL EDITS</h3>
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-6">
+            <div class="glass-card aspect-[9/16] p-1" data-aos="fade-up">
                 <iframe src="https://www.youtube.com/embed/9P7aDGpgSbc"></iframe>
             </div>
-            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center bg-gray-50 p-4" data-aos="fade-up" data-aos-delay="100">
-                <a href="https://mega.nz/file/WzxiyAaZ#SBlK_4eVeLypSJcwIMF_KB7O1-UwQvEopJUEmcmSVgU" target="_blank" class="text-[9px] font-black border-b-2 border-black pb-1 uppercase tracking-tighter">View Project 01</a>
+            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center p-6 text-center" data-aos="fade-up" data-aos-delay="100">
+                <a href="https://mega.nz/file/WzxiyAaZ#SBlK_4eVeLypSJcwIMF_KB7O1-UwQvEopJUEmcmSVgU" target="_blank" class="text-[10px] font-black border-b border-[#ff0033] pb-2 uppercase tracking-tighter hover:text-[#ff0033] transition">Project 01</a>
             </div>
-            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center bg-gray-50 p-4" data-aos="fade-up" data-aos-delay="200">
-                <a href="https://mega.nz/file/7qR1mDiD#KrSp0p3O5MGUiUvavsJHacZYykGpsUTPL_m2BaGeAj0" target="_blank" class="text-[9px] font-black border-b-2 border-black pb-1 uppercase tracking-tighter">View Project 02</a>
+            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+                <a href="https://mega.nz/file/7qR1mDiD#KrSp0p3O5MGUiUvavsJHacZYykGpsUTPL_m2BaGeAj0" target="_blank" class="text-[10px] font-black border-b border-[#ff0033] pb-2 uppercase tracking-tighter hover:text-[#ff0033] transition">Project 02</a>
             </div>
-            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center bg-gray-50 p-4" data-aos="fade-up" data-aos-delay="300">
-                <a href="https://mega.nz/file/LvozBCTI#Q20xhETYpP1YC0M0bNlaCpx8WCXKQ8OeOHegJqXWUOM" target="_blank" class="text-[9px] font-black border-b-2 border-black pb-1 uppercase tracking-tighter">View Project 03</a>
+            <div class="glass-card aspect-[9/16] flex flex-col items-center justify-center p-6 text-center" data-aos="fade-up" data-aos-delay="300">
+                <a href="https://mega.nz/file/LvozBCTI#Q20xhETYpP1YC0M0bNlaCpx8WCXKQ8OeOHegJqXWUOM" target="_blank" class="text-[10px] font-black border-b border-[#ff0033] pb-2 uppercase tracking-tighter hover:text-[#ff0033] transition">Project 03</a>
             </div>
         </div>
     </section>
 
-    <section id="about" class="bg-[#fafafa] border-y border-black/5">
-        <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 px-8 items-center">
+    <section id="about" class="bg-[#080808] border-y border-white/5">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 px-8 items-center">
             <div data-aos="fade-right">
-                <div class="w-44 h-44 grayscale hover:grayscale-0 transition duration-1000 rounded-lg overflow-hidden mb-8 shadow-xl">
-                    <img src="prajwal_dp.png" alt="Prajwal Daundkar" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/400/000?text=PRAJWAL'">
+                <div class="w-48 h-48 rounded-2xl overflow-hidden mb-8 shadow-2xl border-2 border-[#ff0033]/20 relative group">
+                    <img src="prajwal_dp.png" alt="Prajwal Daundkar" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700" onerror="this.src='https://via.placeholder.com/400/ff0033?text=PRAJWAL'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#ff0033]/40 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
                 </div>
-                <h2 class="text-4xl font-black uppercase tracking-tighter">Prajwal Daundkar</h2>
-                <p class="text-gray-400 text-[10px] font-bold uppercase tracking-widest mt-2">Visual Architect / Editor</p>
-                <p class="text-gray-500 text-sm mt-6 leading-relaxed max-w-sm">Cinematic storytelling through high-end video editing and motion graphics. Creating visual experiences that leave a mark.</p>
+                <h2 class="text-5xl font-black uppercase tracking-tighter">Prajwal Daundkar</h2>
+                <p class="text-[#ff0033] text-[11px] font-black uppercase tracking-[0.4em] mt-3">Visual Architect / Editor</p>
+                <p class="text-white/50 text-sm mt-8 leading-relaxed max-w-sm">Crafting high-fidelity visual experiences. Specialized in 3D environments, motion design, and high-impact cinematic editing.</p>
             </div>
-            <div class="space-y-6" data-aos="fade-up">
-                <div><div class="flex justify-between text-[10px] font-black uppercase"><span>Premiere Pro</span><span>96%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 96%"></div></div></div>
-                <div><div class="flex justify-between text-[10px] font-black uppercase"><span>After Effects</span><span>92%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 92%"></div></div></div>
-                <div><div class="flex justify-between text-[10px] font-black uppercase"><span>DaVinci Resolve</span><span>88%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 88%"></div></div></div>
-                <div><div class="flex justify-between text-[10px] font-black uppercase"><span>Motion Design</span><span>94%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 94%"></div></div></div>
+            <div class="space-y-8" data-aos="fade-up">
+                <div><div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-white/60"><span>Premiere Pro</span><span class="text-[#ff0033]">96%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 96%"></div></div></div>
+                <div><div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-white/60"><span>After Effects</span><span class="text-[#ff0033]">92%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 92%"></div></div></div>
+                <div><div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-white/60"><span>DaVinci Resolve</span><span class="text-[#ff0033]">88%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 88%"></div></div></div>
+                <div><div class="flex justify-between text-[11px] font-black uppercase tracking-widest text-white/60"><span>Cinema 4D / 3D</span><span class="text-[#ff0033]">94%</span></div><div class="bar-bg"><div class="bar-fill" style="--w: 94%"></div></div></div>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center opacity-30 text-[8px] font-black uppercase tracking-[1.5em]">
+    <footer class="py-16 text-center opacity-40 text-[9px] font-black uppercase tracking-[2em]">
         Prajwal Daundkar © 2026 | Visual Architect
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 1200, once: true });
+        AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
         const menuBtn = document.getElementById('menu-btn'), closeBtn = document.getElementById('close-btn'), mobileMenu = document.getElementById('mobile-menu'), mobileLinks = document.querySelectorAll('.mobile-link');
         menuBtn.onclick = () => { mobileMenu.classList.add('active'); document.body.style.overflow = 'hidden'; };
         const close = () => { mobileMenu.classList.remove('active'); document.body.style.overflow = 'auto'; };
